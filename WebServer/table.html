@@ -4,9 +4,7 @@
 <head>
 
 <script type="text/javascript">
-function insertText () {
-    document.getElementById('td1').innerHTML = "Some text to enter";
-}
+
 
 function readCookies(){
 	var txtFile = new XMLHttpRequest();
@@ -33,10 +31,9 @@ function readCookies(){
 </head>
 
 
-<body onload="insertText(); readCookies();">
+<body onload="readCookies();">
 
 <h1>XSS Attack Example</h1>
-
  <table border="2" style="width:100%">
   <tr>
     <td>Client Ip Address</td><td id = "td1">value</td>
