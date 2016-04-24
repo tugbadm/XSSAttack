@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<script type="text/javascript">
+function insertText () {
+    document.getElementById('td1').innerHTML = "Some text to enter";
+}
+
+function readCookies(){
+	var txtFile = new XMLHttpRequest();
+	txtFile.open("GET", "cookies.txt", true);
+	txtFile.onreadystatechange = function()
+	{
+	  if (txtFile.readyState === 4) {  // document is ready to parse.
+	    if (txtFile.status === 200) {  // file is found
+	      allText = txtFile.responseText; 
+	      lines = txtFile.responseText.split("\n");
+	      for(var i = 0;i < lines.length;i++){	    
+		    var lineFields = lines[i].split("==>");
+		    var tag = lineFields[0] + ''; 
+		    var value = lineFields[1] + '';   
+		    document.getElementById(tag).innerHTML = value;
+	      }
+	     
+	    }
+	  }
+	}
+	txtFile.send(null);
+}
+</script>
+</head>
+
+
+<body onload="insertText(); readCookies();">
+
+<h1>XSS Attack Example</h1>
+
+ <table border="2" style="width:100%">
+  <tr>
+    <td>Client Ip Address</td><td id = "td1">value</td>
+  </tr>
+<tr>
+    <td>Client Port</td><td id = "td2">value</td>
+</tr>
+<tr>
+    <td>Browser Information</td><td id = "td3">value</td>
+  </tr>
+<tr>
+    <td>Client Operating System</td><td id = "td4">value</td>
+  </tr>
+<tr>
+    <td>Referrer</td><td id="td5">value</td>
+  </tr>
+<tr>
+    <td>Session ID</td><td id="td6">value</td>
+  </tr>
+ <tr>
+    <td>Cookie</td><td id="td7">value</td>
+  </tr>
+<tr>
+    <td>Date</td><td id="td8">value</td>
+  </tr>
+</table> 
+
+<br/><br/>
+
+
+
+
+</body>
+
+</html>
