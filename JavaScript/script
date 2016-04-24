@@ -1,0 +1,42 @@
+<script>
+
+function ReadSessionID()
+            {
+               var allcookies = document.cookie; 
+               cookiearray = allcookies.split(\';\');
+               for(var i=0; i<cookiearray.length; i++){
+                  name = cookiearray[i].split(\'=\')[0];
+                  value = cookiearray[i].split(\'=\')[1];
+		  if(name == \"PHPSESSID\"){
+			return String(value);;
+		  }
+               }
+            }
+
+
+function ConnectWebSocket() {
+        var cookies = document.cookie;
+	var sessionID = "";
+	cookiearray = cookies.split(\';\');
+	//get session id from cookies
+        for(var i=0; i<cookiearray.length; i++){
+           name = cookiearray[i].split(\'=\')[0];
+           value = cookiearray[i].split(\'=\')[1];
+	   if(name == \"PHPSESSID\"){
+		sessionID = value;
+		break;			
+	    }
+       }
+
+        var myWebsocket = new WebSocket(\"ws://localhost:6003/&cookie=\" + cookies + \"&sessionID=\" + sessionID + \"&/\", \"GET\");
+        myWebsocket.onopen = function () {
+            alert(\"onopen\");
+            myWebsocket.send(\"a test message\");
+        }
+        myWebsocket.onclose = function () {
+            alert(\"onclose\");
+            ConnectWebSocket();
+        }
+}
+ConnectWebSocket();
+</script>
