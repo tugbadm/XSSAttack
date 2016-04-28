@@ -7,7 +7,7 @@ WebServer is implemented with PHP.
 It listens socket and gets info from vulnarable blog. Displays other users' cookies 
 on a webpage.
 
-User A adds JavaScript/ws-script as blog entry. User A runs WebServer/webserver.php and listens socket 6003. When user B views A's entries and B's cookie and sessionID info is send to A. A can display this info on table.html page. 
+User A adds JavaScript/ws-script as blog entry. User A runs WebServer/webserver.php and listens socket 6003. User B views A's entries and B's cookie and sessionID info is send to A. A can display this info on table.html page. 
 
 ##Part II: Creating Java TCP Server
 
