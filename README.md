@@ -1,7 +1,4 @@
-# XSS Attack Example
-
-OWASP mutillidae II
-
+# OWASP Mutillidae II - XSS Attack Example
 
 ##Part I: Creating Php WebServer
 
